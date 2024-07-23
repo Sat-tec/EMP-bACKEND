@@ -6,20 +6,16 @@ import java.util.List;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import com.example.firstboot.learnspringboot.EmployeeEntity;
 import com.example.firstboot.learnspringboot.Model.Employee;
-
-// import com.example.firstboot.learnspringboot.EmployeeEntity;
-import org.springframework.jdbc.core.JdbcTemplate;
 
 import com.example.firstboot.learnspringboot.Repository.EmployeeRepository;
 
 @Service
 public class EmployeeServicesImpl implements EmployeeService {
 
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
-// 
+    
     @Autowired
     private EmployeeRepository employeeRepository;
 
@@ -48,8 +44,7 @@ public class EmployeeServicesImpl implements EmployeeService {
     public boolean deleteEmployee(Long id) {
         if (employeeRepository.existsById(id)) {
             employeeRepository.deleteById(id);
-            Long maxId = jdbcTemplate.queryForObject("Select COALESCE(MAX(id), 0) FROM employees", Long.class);
-            jdbcTemplate.execute("ALTER TABLE employees AUTO_INCREMENT = " + (maxId + 1));
+            
             return true;
         }
         return false;
@@ -65,7 +60,6 @@ public class EmployeeServicesImpl implements EmployeeService {
         existingEmployee.setAddress(employee.getAddress());
         existingEmployee.setLastname(employee.getLastname());
 
-
         employeeRepository.save(existingEmployee);
         return "Update Successfully";
     }
@@ -75,9 +69,8 @@ public class EmployeeServicesImpl implements EmployeeService {
         EmployeeEntity employeeEntity = employeeRepository.findById(id).get();
         Employee employee = new Employee();
         BeanUtils.copyProperties(employeeEntity, employee);
-        return employee;    
+        return employee;
 
     }
 
 }
-
