@@ -1,7 +1,9 @@
 package com.example.firstboot.learnspringboot.Service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +17,6 @@ import com.example.firstboot.learnspringboot.Repository.EmployeeRepository;
 @Service
 public class EmployeeServicesImpl implements EmployeeService {
 
-    
     @Autowired
     private EmployeeRepository employeeRepository;
 
@@ -44,7 +45,7 @@ public class EmployeeServicesImpl implements EmployeeService {
     public boolean deleteEmployee(Long id) {
         if (employeeRepository.existsById(id)) {
             employeeRepository.deleteById(id);
-            
+
             return true;
         }
         return false;
@@ -73,4 +74,33 @@ public class EmployeeServicesImpl implements EmployeeService {
 
     }
 
+    @Override
+    public List<Employee> searchEmployeesByName(String name) {
+        // Split the name into first and last names
+    // String[] names = name.split(" ");
+    
+    // // Check if there are exactly two parts (first and last names)
+    // if (names.length != 2) {
+    //     // If not exactly two parts, return an empty list
+    //     return Collections.emptyList();
+    // }
+    //     String firstName = names[0];
+    // String lastName = names[1];
+
+    List<EmployeeEntity> employeeEntities =
+    employeeRepository.findByFirstnameContainingIgnoreCaseOrLastnameContainingIgnoreCase(name,
+    name);
+
+    
+    return employeeEntities.stream().map(entity -> {
+    Employee employee = new Employee();
+    BeanUtils.copyProperties(entity, employee);
+    return employee;
+    }).collect(Collectors.toList());
+    }
+
+ 
+
+
+    
 }

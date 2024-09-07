@@ -3,7 +3,6 @@ package com.example.firstboot.learnspringboot.Controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-// import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,12 +11,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.firstboot.learnspringboot.Model.Employee;
 import com.example.firstboot.learnspringboot.Service.EmployeeService;
-
-
-
-
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PutMapping;
 
 
@@ -37,6 +33,12 @@ public class EmpController {
     @GetMapping("employees")
     public List<Employee> getAllEmployees() {
         return employeeService.readEmployees();
+    }
+
+    // Search Data by name
+    @GetMapping("employees/search")
+    public List<Employee> searchEmployeesByName(@RequestParam String name) {
+        return employeeService.searchEmployeesByName(name);
     }
 
     // Read Data By Id
