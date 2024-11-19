@@ -19,7 +19,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 
 
 @RestController
-@CrossOrigin("http://localhost:5173/")
+// @CrossOrigin("http://localhost:5173/")
+@CrossOrigin(origins = {"http://localhost:5173", "http://192.168.43.138:5173"})
 public class EmpController {
     //List<Employee> employees = new ArrayList<>();
     // EmployeeService employeeService = new EmployeeServicesImpl();
